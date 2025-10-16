@@ -9,7 +9,28 @@
     <!-- Load Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- Load Tone.js for sound effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js">
+const themeToggle = document.getElementById("theme-toggle");
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    if (document.body.classList.contains("dark")) {
+        themeToggle.textContent = "☀️ Light Mode";
+        document.documentElement.style.setProperty('--pink-light', '#0f172a');
+        document.documentElement.style.setProperty('--pink-accent', '#f472b6');
+        document.documentElement.style.setProperty('--navy-blue', '#f1f5f9');
+        document.documentElement.style.setProperty('--peach', '#1e293b');
+        document.documentElement.style.setProperty('--red-heart', '#ef4444');
+        document.documentElement.style.setProperty('--green', '#10b981');
+    } else {
+        themeToggle.textContent = "🌙 Dark Mode";
+        document.documentElement.style.setProperty('--pink-light', '#fce7f6');
+        document.documentElement.style.setProperty('--navy-blue', '#1e40af');
+        document.documentElement.style.setProperty('--peach', '#fdb99b');
+    }
+});
+
+
+    </script>
     <style>
         :root {
             --pink-light: #fce7f6; /* bg-pink-100 */
@@ -18,8 +39,15 @@
             --peach: #fdb99b; /* Custom peach tone */
             --red-heart: #ef4444; /* red-500 */
             --green: #10b981; /* green-500 */
+            
         }
         body {
+<button id="theme-toggle" 
+  class="fixed top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-full shadow-md z-50">
+  🌙 Dark Mode
+</button>
+
+
             font-family: 'Inter', sans-serif;
             background-color: var(--pink-light);
             transition: background-color 0.5s;
