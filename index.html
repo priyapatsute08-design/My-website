@@ -4,26 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For MY PASANDIDA MARD ❤️</title>
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Load Tone.js for sound effects -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <style>
+        /* --- Base Variables (Light Mode Default) --- */
         :root {
-            --pink-light: #fce7f6; /* bg-pink-100 */
+            --bg-body: #fce7f6; /* bg-pink-100 */
+            --bg-card-main: #ffffff; /* bg-white */
+            --text-primary: #1e40af; /* blue-800 */
             --pink-accent: #f472b6; /* rose-400 */
-            --navy-blue: #1e40af; /* blue-800 */
-            --peach: #fdb99b; /* Custom peach tone */
             --red-heart: #ef4444; /* red-500 */
+            --peach: #fdb99b; /* Custom peach tone */
             --green: #10b981; /* green-500 */
         }
+
+        /* --- Dark Mode Variables Override --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #1f2937; /* dark:bg-gray-800 */
+                --bg-card-main: #111827; /* dark:bg-gray-900 */
+                --text-primary: #93c5fd; /* dark:text-blue-300 */
+                --pink-accent: #fbcfe8; /* light pink for contrast */
+                --red-heart: #fca5a5; /* lighter red */
+                --peach: #374151; /* dark peach/gray for contrast */
+            }
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--pink-light);
+            background-color: var(--bg-body);
             transition: background-color 0.5s;
             min-height: 100vh;
+        }
+
+        /* Adjust colors using variables */
+        #love-letter-panel .bg-peach {
+            background-color: var(--peach);
+            color: var(--text-primary);
         }
 
         /* Glitter/Confetti Effect */
@@ -60,7 +78,7 @@
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
-        /* Responsive Layout adjustments */
+        /* Responsive Layout adjustments (already good, just confirming) */
         .main-card {
             max-width: 90%;
             margin: 0 auto;
@@ -70,15 +88,21 @@
                 max-width: 500px;
             }
         }
+        
+        /* Optional: Image filter for dark mode */
+        @media (prefers-color-scheme: dark) {
+            img:not([src*=".svg"]):not(.no-dark-filter) {
+                filter: brightness(0.85) contrast(1.1);
+            }
+        }
     </style>
 </head>
 <body class="flex items-center justify-center p-4">
 
-    <!-- Welcome Modal (Layered over everything until dismissed) -->
-    <div id="welcome-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] transition-opacity duration-500">
-        <div class="bg-white p-8 md:p-12 rounded-3xl text-center shadow-2xl border-4 border-red-500 max-w-sm mx-4 transition-transform duration-500">
-            <h2 id="modal-title" class="text-3xl font-extrabold text-red-500 mb-4">A Special Surprise Just For You! 💌</h2>
-            <p id="modal-message" class="text-xl text-navy-blue mb-6">Answer a few simple questions to collect compliments and cute pictures!</p>
+    <div id="welcome-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] transition-opacity duration-500 dark:bg-opacity-90">
+        <div class="bg-white p-8 md:p-12 rounded-3xl text-center shadow-2xl border-4 border-red-500 max-w-sm mx-4 transition-transform duration-500 dark:bg-gray-800 dark:border-rose-300">
+            <h2 id="modal-title" class="text-3xl font-extrabold text-red-500 mb-4 dark:text-red-400">A Special Surprise Just For You! 💌</h2>
+            <p id="modal-message" class="text-xl text-navy-blue mb-6 dark:text-blue-300">Answer a few simple questions to collect compliments and cute pictures!</p>
             <button onclick="startQuiz()" 
                     class="bg-pink-accent hover:bg-rose-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
                 Start The Quiz!
@@ -87,23 +111,20 @@
     </div>
 
 
-    <!-- Main Application Card -->
-    <div id="app-container" class="main-card bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-rose-400/50 transition-all duration-500">
+    <div id="app-container" class="main-card bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-rose-400/50 transition-all duration-500 dark:bg-gray-900 dark:border-rose-300">
 
-        <!-- Scoreboard -->
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-extrabold text-blue-800">My Quiz for You</h1>
-            <div id="scoreboard" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-full shadow-lg flex items-center space-x-2 transition-all duration-500">
+            <h1 class="text-3xl font-extrabold text-blue-800 dark:text-blue-300">My Quiz for You</h1>
+            <div id="scoreboard" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-full shadow-lg flex items-center space-x-2 transition-all duration-500 dark:bg-indigo-700">
                 <span class="text-xl">Score:</span>
                 <span id="heart-score" class="text-2xl"></span>
             </div>
         </div>
 
-        <!-- Question Panel -->
         <div id="question-panel" class="hidden">
-            <p id="question-text" class="text-xl text-navy-blue mb-6 font-semibold"></p>
+            <p id="question-text" class="text-xl text-navy-blue mb-6 font-semibold dark:text-blue-300"></p>
             <input type="text" id="user-answer" placeholder="Type your answer here..."
-                   class="w-full p-3 mb-4 border-2 border-pink-400 rounded-xl focus:ring-2 focus:ring-rose-400 outline-none transition duration-150 text-gray-700">
+                   class="w-full p-3 mb-4 border-2 border-pink-400 rounded-xl focus:ring-2 focus:ring-rose-400 outline-none transition duration-150 text-gray-700 dark:border-pink-300 dark:bg-gray-800 dark:text-gray-200">
             <button onclick="submitAnswer()" id="submit-btn"
                     class="w-full bg-rose-400 hover:bg-rose-500 text-white font-bold py-3 rounded-xl shadow-md transition duration-300 transform hover:scale-[1.01] flex items-center justify-center space-x-2">
                     <span>Submit and See My Message!</span>
@@ -113,19 +134,15 @@
             </button>
         </div>
 
-        <!-- Compliment/Result Panel -->
         <div id="result-panel" class="hidden text-center transition-opacity duration-500">
-            <h2 class="text-2xl font-extrabold text-green-600 mb-4 animate-bounce">CORRECT! (You win a compliment!)</h2>
-            <p id="compliment-text" class="text-xl text-navy-blue whitespace-pre-wrap text-left mb-6 font-medium"></p>
+            <h2 class="text-2xl font-extrabold text-green-600 mb-4 animate-bounce dark:text-green-400">CORRECT! (You win a compliment!)</h2>
+            <p id="compliment-text" class="text-xl text-navy-blue whitespace-pre-wrap text-left mb-6 font-medium dark:text-blue-300"></p>
             <div class="flex justify-center mb-6">
-                <!-- Image URL is now set from the JavaScript object -->
                 <img id="meme-image" class="w-full max-w-sm h-auto rounded-xl shadow-lg border-4 border-peach object-cover" alt="Cute Animal Picture" 
                      onerror="this.onerror=null; this.src='https://placehold.co/400x300/F472B6/ffffff?text=REWARD+IMAGE+ERROR';">
             </div>
             
-            <!-- Navigation Buttons -->
             <div class="flex justify-center space-x-4">
-                <!-- PREVIOUS BUTTON -->
                 <button onclick="showPreviousCompliment()" id="prev-btn" disabled
                         class="px-6 bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 rounded-xl shadow-md transition duration-300 transform hover:scale-[1.01] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
@@ -134,9 +151,8 @@
                         <span>Previous Compliment</span>
                 </button>
 
-                <!-- NEXT BUTTON -->
                 <button onclick="goToNextPhase()" id="next-btn"
-                        class="px-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-md transition duration-300 transform hover:scale-[1.01] flex items-center justify-center space-x-2">
+                        class="px-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-md transition duration-300 transform hover:scale-[1.01] flex items-center justify-center space-x-2 dark:bg-indigo-700 dark:hover:bg-indigo-600">
                         <span>Next Compliment</span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                             <path fill-rule="evenodd" d="M3.75 12a.75.75 0 0 1 .75-.75h11.69l-2.22-2.22a.75.75 0 1 1 1.06-1.06l3.5 3.5a.75.75 0 0 1 0 1.06l-3.5 3.5a.75.75 0 1 1-1.06-1.06l2.22-2.22H4.5a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
@@ -145,18 +161,18 @@
             </div>
         </div>
 
-        <!-- Love Letter Panel (Initially Hidden) -->
         <div id="love-letter-panel" class="hidden text-center py-8">
-            <h2 class="text-4xl font-extrabold text-red-500 mb-6">A Letter For You ❤️</h2>
+            <h2 class="text-4xl font-extrabold text-red-500 mb-6 dark:text-red-400">A Letter For You ❤️</h2>
             <div class="bg-peach text-blue-800 p-6 rounded-2xl shadow-xl text-left">
                 <p id="love-letter-content" class="whitespace-pre-wrap leading-relaxed text-lg"></p>
             </div>
-            <p class="mt-8 text-xl font-bold text-pink-accent">Faithfully yours.</p>
+            <p class="mt-8 text-xl font-bold text-pink-accent dark:text-pink-300">Faithfully yours.</p>
         </div>
 
     </div>
 
     <script>
+        // All JavaScript remains the same, as the changes were purely visual (CSS/Tailwind classes).
         const welcomeModal = document.getElementById('welcome-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalMessage = document.getElementById('modal-message');
@@ -315,13 +331,14 @@
         function updateScoreboard() {
             const filledHearts = '❤️'.repeat(score);
             const emptyHearts = '🤍'.repeat(totalQuestions - score);
-            heartScore.innerHTML = `<span class="text-red-500">${filledHearts}</span>${emptyHearts}`;
+            heartScore.innerHTML = `<span class="text-red-500 dark:text-red-400">${filledHearts}</span>${emptyHearts}`;
             
             if (score === totalQuestions) {
-                scoreboard.classList.remove('bg-indigo-600');
+                // Tailwind classes for the winning scoreboard
+                scoreboard.classList.remove('bg-indigo-600', 'dark:bg-indigo-700');
                 scoreboard.classList.add('bg-yellow-400', 'animate-pulse');
             } else {
-                 scoreboard.classList.add('bg-indigo-600');
+                 scoreboard.classList.add('bg-indigo-600', 'dark:bg-indigo-700');
                  scoreboard.classList.remove('bg-yellow-400', 'animate-pulse');
             }
         }
@@ -342,11 +359,12 @@
                 
                 if (score > 1 || isViewingPastCompliment) {
                      prevBtn.disabled = false;
-                     prevBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                     // Add dark mode classes here as well for consistency
+                     prevBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'dark:bg-indigo-700', 'dark:hover:bg-indigo-600');
                      prevBtn.classList.remove('bg-gray-400', 'hover:bg-gray-500');
                 } else {
                      prevBtn.disabled = true;
-                     prevBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                     prevBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'dark:bg-indigo-700', 'dark:hover:bg-indigo-600');
                      prevBtn.classList.add('bg-gray-400', 'hover:bg-gray-500');
                 }
             }
